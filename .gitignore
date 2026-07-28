@@ -1,0 +1,38 @@
+# ── rust ──────────────────────────────────────────────────────────
+/target
+**/*.rs.bk
+Cargo.lock.bak
+
+# ── node / svelte ─────────────────────────────────────────────────
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+
+# ── tauri ─────────────────────────────────────────────────────────
+src-tauri/target
+src-tauri/gen
+src-tauri/WixTools
+src-tauri/binaries
+
+# ── os ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── editors ───────────────────────────────────────────────────────
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# ── local data (would contain user wallet state if run here) ──────
+/dev-data
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

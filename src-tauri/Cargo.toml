@@ -1,0 +1,48 @@
+[package]
+name = "wallet-harness"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "wallet_harness_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { workspace = true }
+
+[dependencies]
+# internal crates
+chain-rpc = { path = "../crates/chain-rpc" }
+signer = { path = "../crates/signer" }
+indexer = { path = "../crates/indexer" }
+cost-basis = { path = "../crates/cost-basis" }
+watcher = { path = "../crates/watcher" }
+dex-router = { path = "../crates/dex-router" }
+
+# tauri
+tauri = { workspace = true, features = [] }
+tauri-plugin-shell = { workspace = true }
+
+# async + errors
+tokio = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# serde
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# storage
+sqlx = { workspace = true }
+
+# logging
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# utilities
+chrono = { workspace = true }
+uuid = { workspace = true }
+keyring = { workspace = true }

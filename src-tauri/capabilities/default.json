@@ -1,0 +1,9 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Minimal capability set. No broad filesystem or shell access. All external calls go through explicit backend commands that the user must configure.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default"
+  ]
+}

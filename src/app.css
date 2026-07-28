@@ -1,0 +1,297 @@
+/* ─────────────────────────────────────────────────────────────────────
+   Wallet Harness — terminal aesthetic
+   
+   Design bet: this app is a professional tool for someone who reads
+   numbers all day. No rounded corners, no gradients, no decorative
+   cruft. Monospace everything. Dense layout. One accent color (amber),
+   used only for state changes and active elements. Dark by default —
+   your eyes will thank you at 2am.
+   ───────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* ─── palette ────────────────────────────────────────────────────── */
+  --bg-0:        #0a0a0b;   /* deepest — page background */
+  --bg-1:        #101012;   /* panels */
+  --bg-2:        #16161a;   /* elevated rows / inputs */
+  --bg-3:        #1e1e23;   /* hover state */
+
+  --border:      #26262d;
+  --border-hi:   #34343d;
+
+  --fg-0:        #e6e6ea;   /* primary text */
+  --fg-1:        #a8a8b0;   /* secondary */
+  --fg-2:        #6a6a72;   /* tertiary / labels */
+  --fg-3:        #3d3d45;   /* disabled / scaffolding */
+
+  --accent:      #ffb020;   /* amber — active, focus, state changes */
+  --accent-dim:  #b87800;
+
+  --gain:        #4ecb71;   /* positive P&L, confirmed orders */
+  --loss:        #ff5d5d;   /* negative P&L, failed orders */
+  --warn:        #e8c547;   /* armed orders pending trigger */
+  --info:        #5dade2;   /* informational */
+
+  /* ─── typography ─────────────────────────────────────────────────── */
+  --font-data:   'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --font-ui:     'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --font-display: 'Space Mono', ui-monospace, monospace;
+
+  --fs-xs:   10px;
+  --fs-sm:   11px;
+  --fs-base: 12px;
+  --fs-md:   13px;
+  --fs-lg:   15px;
+  --fs-xl:   20px;
+  --fs-xxl:  28px;
+
+  /* ─── spacing (4px grid) ─────────────────────────────────────────── */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+
+  /* ─── layout ─────────────────────────────────────────────────────── */
+  --sidebar-w: 200px;
+  --topbar-h:  44px;
+  --statusbar-h: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-0);
+  color: var(--fg-0);
+  font-family: var(--font-ui);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'ss02', 'zero', 'cv01'; /* slashed zero + alt glyphs */
+  overflow: hidden; /* app fills the native window */
+}
+
+/* Selection: amber highlight on dark — unmistakable */
+::selection {
+  background: var(--accent);
+  color: var(--bg-0);
+}
+
+/* Scrollbars: thin, monochrome, no rounded tracks */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-0);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hi);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-3);
+}
+
+/* ─── utility: tabular figures for all numeric data ────────────────── */
+.num, .mono, code, kbd, pre {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── buttons ──────────────────────────────────────────────────────── */
+button, .btn {
+  font-family: var(--font-ui);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  background: var(--bg-2);
+  color: var(--fg-0);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 80ms ease, border-color 80ms ease;
+  letter-spacing: 0.02em;
+}
+button:hover, .btn:hover {
+  background: var(--bg-3);
+  border-color: var(--border-hi);
+}
+button:focus-visible, .btn:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+button:disabled, .btn:disabled {
+  color: var(--fg-3);
+  background: var(--bg-1);
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-0);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #ffc040;
+  border-color: #ffc040;
+}
+.btn-danger {
+  background: transparent;
+  color: var(--loss);
+  border-color: var(--loss);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--fg-1);
+}
+.btn-ghost:hover {
+  background: var(--bg-2);
+  color: var(--fg-0);
+}
+
+/* ─── inputs ──────────────────────────────────────────────────────── */
+input, select, textarea {
+  font-family: var(--font-data);
+  font-size: var(--fs-base);
+  background: var(--bg-2);
+  color: var(--fg-0);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+input::placeholder {
+  color: var(--fg-3);
+}
+
+label {
+  display: block;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-2);
+  margin-bottom: var(--s-1);
+}
+
+/* ─── panels ──────────────────────────────────────────────────────── */
+.panel {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+}
+.panel-header {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-2);
+  height: 32px;
+}
+.panel-body {
+  padding: var(--s-3);
+}
+.panel-body.flush {
+  padding: 0;
+}
+
+/* ─── data tables ─────────────────────────────────────────────────── */
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: var(--fs-base);
+}
+table.data th {
+  text-align: left;
+  font-weight: 500;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-2);
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-1);
+  position: sticky;
+  top: 0;
+}
+table.data td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-0);
+}
+table.data tr:hover td {
+  background: var(--bg-2);
+}
+table.data td.num, table.data th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+table.data td.gain { color: var(--gain); }
+table.data td.loss { color: var(--loss); }
+
+/* ─── status pills ───────────────────────────────────────────────── */
+.pill {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  line-height: 1.4;
+}
+.pill.armed    { color: var(--warn); }
+.pill.triggered{ color: var(--accent); }
+.pill.awaiting { color: var(--info); }
+.pill.submitted{ color: var(--info); }
+.pill.confirmed{ color: var(--gain); }
+.pill.failed   { color: var(--loss); }
+.pill.cancelled{ color: var(--fg-2); }
+
+/* ─── blink for live values ──────────────────────────────────────── */
+@keyframes flash-up   { from { background: rgba(78,203,113,0.35); } to { background: transparent; } }
+@keyframes flash-down { from { background: rgba(255,93,93,0.35);  } to { background: transparent; } }
+.flash-up   { animation: flash-up   500ms ease-out; }
+.flash-down { animation: flash-down 500ms ease-out; }
+
+/* ─── scaffolding message (used by stub pages) ───────────────────── */
+.scaffold {
+  padding: var(--s-6);
+  color: var(--fg-2);
+  font-size: var(--fs-md);
+  border: 1px dashed var(--border-hi);
+  background: repeating-linear-gradient(
+    45deg,
+    transparent 0,
+    transparent 8px,
+    rgba(255,255,255,0.015) 8px,
+    rgba(255,255,255,0.015) 10px
+  );
+}
+.scaffold h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--fg-0);
+  margin-bottom: var(--s-2);
+  letter-spacing: 0.02em;
+}
+.scaffold code {
+  color: var(--accent);
+  background: var(--bg-2);
+  padding: 1px 4px;
+}

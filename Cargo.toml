@@ -1,0 +1,64 @@
+[workspace]
+resolver = "2"
+members = [
+    "src-tauri",
+    "crates/chain-rpc",
+    "crates/signer",
+    "crates/indexer",
+    "crates/cost-basis",
+    "crates/watcher",
+    "crates/dex-router",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Project Contributors"]
+license = "MIT OR Apache-2.0"
+rust-version = "1.78"
+
+[workspace.dependencies]
+# async + errors
+tokio = { version = "1.40", features = ["full"] }
+anyhow = "1.0"
+thiserror = "1.0"
+
+# serde
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# ethereum / evm
+alloy = { version = "0.3", features = ["full"] }
+alloy-primitives = "0.8"
+
+# storage
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "sqlite", "macros", "chrono"] }
+rusqlite = { version = "0.31", features = ["bundled"] }
+
+# networking
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+
+# logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.10", features = ["v4", "serde"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# crypto / secrets
+keyring = "3.2"          # OS keychain (Secret Service / Credential Manager / macOS Keychain)
+zeroize = { version = "1.8", features = ["derive"] }
+
+# tauri core (referenced by src-tauri)
+tauri = { version = "2.0", features = [] }
+tauri-build = "2.0"
+tauri-plugin-shell = "2.0"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "z"

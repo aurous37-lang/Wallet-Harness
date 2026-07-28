@@ -1,0 +1,7 @@
+timestamp,chain_id,token_address,side,quantity,unit_price_usd,tx_hash
+1600000000,10143,0xtokena,buy,5,1.00,0xa1
+1600003600,10143,0xtokena,buy,5,1.00,0xa2
+1600086400,10143,0xtokenb,buy,100,5.00,0xb1
+1602592000,10143,0xtokena,sell,5,3.00,0xs1
+1694672800,10143,0xtokena,buy,10,2.00,0xa3
+1697264800,10143,0xtokena,sell,10,4.00,0xs2
