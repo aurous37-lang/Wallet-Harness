@@ -12,7 +12,7 @@
     "tauri": "tauri"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^3.0.5",
+    "@sveltejs/adapter-static": "^3.0.11",
     "@sveltejs/kit": "^2.70.1",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@tauri-apps/cli": "^2.1.0",
